@@ -17,7 +17,7 @@ from optparse import OptionParser
 import datetime as d
 import socket
 import sys
-
+import urllib
 import os
 import posixpath
 import BaseHTTPServer
@@ -428,7 +428,7 @@ def main():
 	T = d.datetime.now() + d.timedelta(seconds=server.timeout)
 
 	print ""
-	print "Starting server, use <Ctrl-C> to force it to stop"
+	print "Starting server, use <Ctrl-C> for shutdown"
 	print ""
 	print "Time is now:  ", d.datetime.strftime(d.datetime.now(), "%Y-%d-%m %H:%M")
 	print "Will shutdown:", d.datetime.strftime(T, "%Y-%d-%m %H:%M")
@@ -442,11 +442,8 @@ def main():
 
 
 def getExternalIP():
-	sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	sock.connect(('google.com', 80))
-	ip = sock.getsockname()[0]
-	sock.close()
-	return ip
+	ip = urllib.urlopen('http://wtfismyip.com/text').read()
+	return ip.strip()
 
 
 if __name__ == '__main__':
